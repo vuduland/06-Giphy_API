@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -38,21 +39,20 @@
 
         var mathematicas = $(this).attr("data-name");
         // Example queryURL for Giphy API
-        var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=PkbmO5h8AmSb2Jd8rFeLoU1VOJHIYxEm&q=" + mathematicas + "&limit=10&offset=0&lang=en";
-        
+        var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=PkbmO5h8AmSb2Jd8rFeLoU1VOJHIYxEm&q=" + mathematicas + "&limit=1&offset=0&lang=en";
+
         $.ajax({
           url: queryURL,
           method: "GET"
         }).then(function (response) {
           var results = response.data;
-          for (var i = 0; i < results.length; i++){
-            var mathDiv = $("<div>");
+          for (var i = 0; i < results.length; i++) {
             var p = $("<p>").text("Title: " + results[i].title);
-            var mathImage = $("<img>");
-            mathImage.attr("src", results[i].images.fixed_height.url);
-            mathDiv.append(p);
-            mathDiv.append(mathImage);
-            $("#gifsHere").prepend(mathDiv);
+            var pauseImage = results[i].images.fixed_height_still.url;
+            var mathImage = results[i].images.fixed_height.url;
+            // mathDiv.append(p);
+            // mathDiv.append(mathImage);
+            $("#gifsHere").prepend(`<div><img id="data-name" src="${mathImage}" data-still = "${pauseImage}" data-animate="${mathImage}" data-state="animate" alt="math"></div>`);
           }
 
           console.log(response);
@@ -60,7 +60,7 @@
       }
 
 
-    //  =======================================================================
+      //  =======================================================================
 
 
       // Function for displaying data
@@ -93,10 +93,25 @@
         // Adding the input from the textbox to our array
         maths.push(mathh);
         console.log(maths);
-        
+
         renderButtons();
 
       });
+
+
+      $("#data-name").on("click", function () {
+        
+        var state = $(this).attr("data-state");
+        if (state === "still") {
+          $(this).attr("src", $(this).attr("data-animate"));
+          $(this).attr("data-animate");
+      } else {
+        $(this).attr("src", $(this).attr("data-still"));
+        $(this).attr("data-state", "still");
+      }
+    });
+
+
 
       // =========================================================================
       // Function for displaying the mathematicas info
@@ -104,8 +119,8 @@
       $(document).on("click", ".mathematicas", display);
       renderButtons();
     </script>
-  </div> 
-  
+  </div>
+
 </body>
 
 </html>
