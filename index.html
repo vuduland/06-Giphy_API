@@ -47,12 +47,13 @@
         }).then(function (response) {
           var results = response.data;
           for (var i = 0; i < results.length; i++) {
-            var p = $("<p>").text("Title: " + results[i].title);
+            // var p = $("<p>").text("Title: " + results[i].title);
             var pauseImage = results[i].images.fixed_height_still.url;
             var mathImage = results[i].images.fixed_height.url;
+            var p = results[i].id;
             // mathDiv.append(p);
             // mathDiv.append(mathImage);
-            $("#gifsHere").prepend(`<div><img id="data-name" src="${mathImage}" data-still = "${pauseImage}" data-animate="${mathImage}" data-state="animate" alt="math"></div>`);
+            $("#gifsHere").prepend(`<img id="${p}" src="${mathImage}" data-still = "${pauseImage}" data-animate="${mathImage}" data-state="still" alt="math">`);
           }
 
           console.log(response);
@@ -99,8 +100,8 @@
       });
 
 
-      $("#data-name").on("click", function () {
-        
+      $("#p").on("click", function () {
+        console.log("does this work?");
         var state = $(this).attr("data-state");
         if (state === "still") {
           $(this).attr("src", $(this).attr("data-animate"));
