@@ -87,12 +87,12 @@
       // =========================================================================
       // This function handles events where one button is clicked
       $("#addGifs").on("click", function (event) {
-        event.preventDefault;
+        event.preventDefault();
         // This line grabs the input from the textbox
-        var mathh = $(".userInput").val().trim();
+        var mathh = $("#userInput").val().trim();
         // Adding the input from the textbox to our array
         maths.push(mathh);
-        
+        console.log(maths);
         
         renderButtons();
 
