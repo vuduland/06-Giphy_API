@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Gif Search</title>
+</head>
+
+<body>
+    <!--inputs go here here-->
+    <div id="buttons-list"></div>
+
+    <div class="container">
+        <h1>Add an Input</h1>
+
+        <form id="inputForm">
+            <label for="userInput">Search for a Math Gif!</label>
+            <input type="text" id="userInput"><br>
+
+            <!--Button Triggers new math to be added-->
+            <input id="addInput" type="submit" value="Add a Math Term">
+        </form>
+    </div>
+    <div id="gifs-appear-here">
+    </div>
+</body>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+    var topics = ["Oppenheimer", "Euler", "f(x)"];
+    var maths;
+    var results;
+
+    function renderButtons() {
+
+        $("#buttons-list").empty();
+        for (var i = 0; i < topics.length; i++) {
+            // dynamically generate buttons for each var in the array
+            var button = $("<button>");
+            button.addClass("results");
+            button.attr("data-userInput", topics[i]);
+            button.text(topics[i]);
+            console.log("line47");
+            $("#buttons-list").append(button);
+        }
+    }
+
+    $("#addInput").on("click", function (event) {
+        event.preventDefault();
+
+        var userInput = $("#userInput").val().trim();
+
+        topics.push(userInput);
+        renderButtons();
+    });
+
+    renderButtons();
+
+    $("button").on("click", function () {
+        var userInput = $(this).attr("data-userInput");
+
+
+
+
+        var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + userInput +
+            "&api_key=PkbmO5h8AmSb2Jd8rFeLoU1VOJHIY&limit=10";
+
+
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        })
+            .then(function (response) {
+                console.log(queryURL);
+                console.log(response);
+
+
+                results = response.data;
+
+                for (var i = 0; i < results.length; i++) {
+                    var mathDiv = $("<div>");
+
+                    var pElement = $("<p>").text("Rating: " + results[i].rating);
+
+                    mathImage = $("<img");
+
+                    maths.attr("src", results[i].images.fixed_height.url);
+
+                    mathDiv.append(pElement);
+                    mathDiv.append(mathImage);
+
+
+                    $("#gifs-appear-here").prepend(mathDiv);
+                }
+            });
+    });
+
+</script>
+</body>
+
+</html>
