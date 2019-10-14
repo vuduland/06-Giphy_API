@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Gif Search</title>
+</head>
+
+<body>
+
+  <div id="buttonRows"></div>
+
+  <div class="container">
+    <h1>Search for a Math Gif!</h1>
+
+    <form id="inputForm">
+      <label for="userInput">Math! Gif!</label>
+      <input type="text" id="userInput"><br>
+      <!-- =====BUTTON TRIGGERS NEW MATH GIFS===== -->
+      <input id="addGifs" type="submit" value="addsGifs">
+    </form>
+
+    <div id="gifsHere"></div>
+
+
+
+
+    <!-- ===================Begin javascript========================= -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript">
+      // Initial array
+      var maths = ["Trigonometry", "Spiral", "Fractal", "Data", "Data-Visualization"];
+      // Function for dumping the JSON content for each button into the div
+      function display() {
+
+        var mathematicas = $(this).attr("data-name");
+        // Example queryURL for Giphy API
+        var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=PkbmO5h8AmSb2Jd8rFeLoU1VOJHIYxEm&q=" + mathematicas + "&limit=10&offset=0&lang=en";
+        
+        $.ajax({
+          url: queryURL,
+          method: "GET"
+        }).then(function (response) {
+          var results = response.data;
+          for (var i = 0; i < results.length; i++){
+            var mathDiv = $("<div>");
+            var p = $("<p>").text("Title: " + results[i].title);
+            var mathImage = $("<img>");
+            mathImage.attr("src", results[i].images.fixed_height.url);
+            mathDiv.append(p);
+            mathDiv.append(mathImage);
+            $("#gifsHere").prepend(mathDiv);
+          }
+
+          console.log(response);
+        });
+      }
+
+
+    //  =======================================================================
+
+
+      // Function for displaying data
+      function renderButtons() {
+        // Deleting the buttons prior to adding new movies
+        // (this is necessary otherwise you will have repeat buttons)
+        $("#buttonRows").empty();
+        // Looping through the array
+        for (var i = 0; i < maths.length; i++) {
+          // Then dynamically generating buttons for each movie in the array
+          // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
+          var makeButton = $("<button>");
+          // Adding a class of mathematicas to our button
+          makeButton.addClass("mathematicas");
+          // Adding a data-attribute
+          makeButton.attr("data-name", maths[i]);
+          // Providing the initial button text
+          makeButton.text(maths[i]);
+          // Adding the button to the buttons-view div
+          $("#buttonRows").append(makeButton);
+        }
+      }
+
+      // =========================================================================
+      // This function handles events where one button is clicked
+      $("#addGifs").on("click", function (event) {
+        event.preventDefault;
+        // This line grabs the input from the textbox
+        var mathh = $(".userInput").val().trim();
+        // Adding the input from the textbox to our array
+        maths.push(mathh);
+        
+        
+        renderButtons();
+
+      });
+
+      // =========================================================================
+      // Function for displaying the mathematicas info
+      // Using $(document).on instead of $(".mathematicas").on to add event listeners to dynamically generated elements
+      $(document).on("click", ".mathematicas", display);
+      renderButtons();
+    </script>
+  </div> 
+  
+</body>
+
+</html>

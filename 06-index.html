@@ -20,7 +20,7 @@
             <input type="text" id="userInput"><br>
 
             <!--Button Triggers new math to be added-->
-            <input id="addInput" type="submit" value="Add a Math Term">
+            <input id="add-Input" type="submit" value="Add a Math Term">
         </form>
     </div>
     <div id="gifs-appear-here">
@@ -33,6 +33,9 @@
 <script type="text/javascript">
 
     var topics = ["Oppenheimer", "Euler", "f(x)"];
+
+    var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + userInput +
+        "&api_key=PkbmO5h8AmSb2Jd8rFeLoU1VOJHIY&limit=10";
     var maths;
     var results;
 
@@ -67,8 +70,6 @@
 
 
 
-        var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + userInput +
-            "&api_key=PkbmO5h8AmSb2Jd8rFeLoU1VOJHIY&limit=10";
 
 
         $.ajax({
